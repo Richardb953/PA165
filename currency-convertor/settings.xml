@@ -1,0 +1,17 @@
+<profiles>
+    <profile>
+        <id>localProfile</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <properties>
+            <!-- <tomcat.root>C:\Program Files\Apache Software Foundation\Tomcat 7.0\</tomcat.root>    -->
+            <tomcat.root>c:\eclipse\tomcat\apache-tomcat-7.0.64</tomcat.root>
+        </properties>
+        <server>
+            <id>tomcat7</id>
+            <username>admin</username>
+            <password>s3cret</password>
+        </server>
+    </profile>
+</profiles>
