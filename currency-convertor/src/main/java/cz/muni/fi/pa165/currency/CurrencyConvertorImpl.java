@@ -10,6 +10,7 @@ import java.util.Currency;
  *
  * @author petr.adamek@embedit.cz
  */
+
 public class CurrencyConvertorImpl implements CurrencyConvertor {
 
     private final ExchangeRateTable exchangeRateTable;
