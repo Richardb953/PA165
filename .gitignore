@@ -6,3 +6,6 @@ test-output
 *.iml
 *~
 target
+lib
+*.jar
+*.bat
