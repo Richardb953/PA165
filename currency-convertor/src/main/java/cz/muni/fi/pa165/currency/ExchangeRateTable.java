@@ -1,5 +1,7 @@
 package cz.muni.fi.pa165.currency;
 
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Currency;
 
@@ -9,6 +11,7 @@ import java.util.Currency;
  *
  * @author petr.adamek@embedit.cz
  */
+@Service
 public interface ExchangeRateTable {
 
     /**

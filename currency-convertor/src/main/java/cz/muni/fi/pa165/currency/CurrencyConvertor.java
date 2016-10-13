@@ -1,5 +1,7 @@
 package cz.muni.fi.pa165.currency;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
@@ -9,6 +11,8 @@ import java.util.Currency;
  *
  * @author petr.adamek@embedit.cz
  */
+
+@Component
 public interface CurrencyConvertor {
 
     /**

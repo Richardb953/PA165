@@ -17,7 +17,7 @@ public class MainXml {
 
     public static void main(String ...args){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/WEB-INF/springapp-servlet.xml");
-        CurrencyConvertor currencyConvertor = applicationContext.getBean("currencyConvertor" , CurrencyConvertor.class);
+        CurrencyConvertor currencyConvertor = applicationContext.getBean(CurrencyConvertor.class);
 
         Currency czk=  Currency.getInstance("CZK");
         Currency euro = Currency.getInstance("EUR");
