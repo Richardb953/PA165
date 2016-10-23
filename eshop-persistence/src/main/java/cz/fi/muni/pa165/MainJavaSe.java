@@ -1,16 +1,18 @@
 package cz.fi.muni.pa165;
 
-import java.sql.SQLException;
-import java.util.List;
+import cz.fi.muni.pa165.entity.Category;
+import cz.fi.muni.pa165.entity.Product;
+import cz.fi.muni.pa165.enums.Color;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import cz.fi.muni.pa165.entity.Category;
-import cz.fi.muni.pa165.entity.Product;
+import javax.persistence.PersistenceException;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class MainJavaSe {
 	private static EntityManagerFactory emf;
@@ -22,7 +24,7 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 
 		// BEGIN YOUR CODE
-		task04();
+		task08();
 		// END YOUR CODE
 		emf.close();
 	}
@@ -35,10 +37,21 @@ public class MainJavaSe {
 		// The code below is just testing code do not modify it
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
+
+		Category category = new Category();
+		category.setName("Electronics");
+		Category category1 = new Category();
+		category1.setName("Musical");
+		em.persist(category);
+		em.persist(category1);
+		em.getTransaction().commit();
+
+		//sec transaction
+		em.getTransaction().begin();
+
 		List<Category> categories = em.createQuery(
 				"select c from Category c order by c.name", Category.class)
 				.getResultList();
-
                 if (categories.size() != 2) 
                     throw new RuntimeException("Expected two categories!");
 
@@ -63,7 +76,12 @@ public class MainJavaSe {
 		// TODO under this line. create new EM and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
-
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		category.setName("Electro");
+		em.merge(category);
+		em.getTransaction().commit();
+		em.close();
 
 		// The code below is just testing code do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
@@ -89,17 +107,25 @@ public class MainJavaSe {
 		// Additional task: Change the underlying table of Product entity to be ESHOP_PRODUCTS. After you do this, check this by inspecting console output (the CREATE TABLE statement)
 		//
 		// To test your code uncomment the commented code at the end of this method.
-
-
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		Product p = em.createQuery("select p from Product p", Product.class)
-				.getSingleResult();
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2011, Calendar.JANUARY, 20);
+		Date date = calendar.getTime();
+		Product product = new Product("Guitar", Color.BLACK, date);
+		em.persist(product);
 		em.getTransaction().commit();
 		em.close();
 
-	/** TODO Uncomment the following test code after you are finished!
-	 
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
+		Product p = em.createQuery("select p from Product p", Product.class)
+				.getSingleResult();
+		System.out.println(p.getName()  + " was looked ");
+		em.getTransaction().commit();
+		em.close();
+
+
 		assertEq(p.getName(), "Guitar");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(p.getAddedDate());
@@ -132,7 +158,6 @@ public class MainJavaSe {
 	
 
 		System.out.println("Task7 ok!");
-		*/
 	}
 	
 	private static void task08() {
@@ -143,8 +168,6 @@ public class MainJavaSe {
 		
 		//TODO after you implement equals nad hashCode, you can uncomment the code below. It will try
 		// to check whether you are doing everything correctly. 
-	
-/* TODO uncomment the following (it should work if you were successfull with task08)
 
 
 		class MockProduct extends Product {
@@ -182,8 +205,7 @@ public class MainJavaSe {
 		if (mp.getNameCalled){
 			System.out.println("CORRECT");
 		} else System.out.println("INCORRECT!");
-		 */
-	
+
 	}
 
 	private static void assertEq(Object obj1, Object obj2) {
